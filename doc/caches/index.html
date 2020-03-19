@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./index.css">
+  <title>caches</title>
+</head>
+
+<body>
+  <h1>caches</h1>
+  <script>
+    window.addEventListener('load', async () => {
+      if ('serviceWorker' in navigator) {
+        try {
+          const registration = await navigator.serviceWorker.register('./sw.js')
+          console.log('注册成功', registration)
+        } catch (error) {
+          console.log('注册失败')
+        }
+      }
+    })
+
+    // 只有在默认的情况下，才需要这么做。
+    if (Notification.permission === 'default') {
+      Notification.requestPermission()
+    }
+    // if (!navigator.onLine) {
+    //   new Notification('提示', {
+    //     body: '你当前没有网络，你访问的是缓存'
+    //   })
+    // }
+    window.addEventListener('online', () => {
+      new Notification('提示', {
+        body: '你已经连上网络了，请刷新访问最新的数据'
+      })
+    })
+
+    window.addEventListener('offline', () => {
+      new Notification('提示', {
+        body: '你当前没有网络，你访问的是缓存'
+      })
+    })
+  </script>
+</body>
+
+</html>
